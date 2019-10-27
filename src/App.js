@@ -1,112 +1,70 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-var Chance = require('chance');
-var chance = new Chance();
-// import FirstComponent from './firstComponent';
 
-//PREWORK
-// class App extends Component{
-//   constructor(props){
-//     super(props);
-//     this.state ={
-//     input: '',
-//     items: []
-//   }
-//   }
 
-// FALSE BUTTON
-// E TARGET VALUE
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       text: '',
-//       todos: [],
-//       isClicked: false   
-//     };
-//   }
-
- // FALSE BUTTON
- // E TARGET VALUE 
-  // onChange = e =>{
-  //   this.setState({
-  //     text: e.target.value
-  //   })
-  // }
-
-  // ON CLICK BUTTON
-  class App extends React.Component {
-    buttonClicked() {
-         console.log('Button was clicked!')
-    }
- 
-
-  render(){
-    // FALSE BUTTON CONSOLE LOG
-    // console.log('this is', this.state.isClicked)
-    // console.log('Button was clicked!', this.buttonClicked)
-    return (
-      <div>
-      <header className="App-header">
-        {/* logo */}
-        <img src={logo} className="App-logo" alt="logo" />
-        {/* false button */}
-          <h1>On Click</h1>
-          {/* <input value={this.state.text} onChange={this.onChange}/> */}
-
-          <form onSubmit={this.formSubmit}>
-            <button>Submit</button>
-          </form>
-          {/* ON CLICK BUTTON  */}
-          <p>Hello, {chance.first()}.</p>
-            <p>You're from {chance.country({ full: true })}.</p>
-
-       </header>
-      </div>
-    )
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputText: '',
+      todos: [],
+      isClicked: false,
+      count:0,
+    };
   }
+
+ 
+handleDelete (itemToBeDeleted){
+  console.log(itemToBeDeleted);
+  const newTodos = this.statetodos.filter((_item) => {
+    return _item !==itemToBeDeleted
+  });
+  this.setState({todos: newTodos});
 }
-//PREWORK
-  // toggle = () => {
-  //   this.setState({isOn: !this.state.isOn})
-  // }
 
-  // handleClick = event =>{
-  //   this.setState({input: })
-  // }
+  toggle = () => {
+    this.setState({isClicked: !this.state.isClicked})
+  }
+
+  increase = () =>{
+    this.setState({ count: this.state.count + 1})
+  }
    
-//   inputUpdate = event => {
-//     this.setState({input: event.target.value})
-//   }
+  resetCount = () => {
+    this.setState({ count: this.state.count = 0})
+  }
 
-//   forSubmit = event => {
-//     event.preventDefault()
-//     console.log("THIS IS STATE===", this.state.items)
-//     this.setState({
-//       items : [...this.state.items, this.state.input],
-//       input: ''
-//     })
-//   }
+  handleTextChange = (event) => {
+    this.setState({ inputText: event.target.value})
+  }
 
-// render() {
-// // console.log("===THIS IS STATE===", this.state.isOn)
-//   return (
-//     <div className="App">
-//       <header className="App-header">
+  forSubmit = event => {
+    event.preventDefault()
+   const currentTodos = this.state.todos
+   currentTodos.push(this.state.inputText)
+   console.log(currentTodos)
+   this.setState({ todos: currentTodos, inputText: '' })
+  }
 
-//         <img src={logo} className="App-logo" alt="logo" />
-        
-//         <form onSubmit={this.formSubmit}>
-//           <input value={this.state.input} onChange={this.inputUpdate}/>
-//           <button>Submit</button>
-//         </form>
-       
-//         <FirstComponent items={this.state.items}/>
-//       </header>
+render() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Counter:</h1>
+        <h3>{this.state.count}</h3>
+        <button onClick={this.increase}>Increase Counter</button>
+        <button onClick={this.resetCount}>Reset Counter</button>
+        <button onClick={this.toggle}>{this.state.isClicked ? "Counter: ON" : "Counter: OFF"}</button>
+        <form onSubmit={this.submitTodo}>
+          <input type='text' onChange={this.handleTextChange} value={this.state.inputText}/>
+          <button type='submit'>Add Todo</button>
+        </form>
+        <h2><DisplayList handeDelete={this.handleDelete.bind(this)} todos={ this.state.todos}/></h2>
+
+      </header>
       
-//     </div>
-//   );
-// }
-// }
+    </div>
+  );
+}
+}
 export default App;
